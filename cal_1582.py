@@ -1,9 +1,9 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # COPYRIGHT AND PERMISSION NOTICE
 # 
-# Copyright (c) 2005 Ricardo García González
+# Copyright (c) 2005,2019 Ricardo Garcia
 # 
 # All rights reserved.
 # 
@@ -84,7 +84,7 @@ def previous_leap_days(year):
 	"""Returns the number of leap years in the range [1, year)."""
 
 	if year <= gregorian_reformation_year:
-		return (year - 1) / ancient_leapyear_period
+		return (year - 1) // ancient_leapyear_period
 	# calendar.leapdays() calculates always according to the new method,
 	# so in the "real world" it's off by 12 years/days when applicable
 	return calendar.leapdays(1, year) + leapdays_function_error
@@ -110,7 +110,7 @@ def days_on_month(month, year):
 	if (month == gregorian_reformation_month and
 	    year == gregorian_reformation_year):
 		# Days in the "special month"
-		return sum([sum(map(lambda x: x != 0, line)) for line in
+		return sum([sum([x != 0 for x in line]) for line in
 			    gregorian_reformation_month_calendar])
 	if is_leap_year(year) and month_names[month] == "February":
 		return month_days[month] + 1
@@ -195,20 +195,20 @@ def print_month(month, year):
 	mmat = month_calendar(month, year)
 
 	# Header
-	print ((month_names[month] + " " + str(year)).
-		center(spaces_per_cell * len(week_days) + len(week_days) - 1))
+	print(((month_names[month] + " " + str(year)).
+		center(spaces_per_cell * len(week_days) + len(week_days) - 1)))
 	# Column titles
 	for name in brief_week_days:
-		print name.rjust(spaces_per_cell),
-	print
+		print(name.rjust(spaces_per_cell), end=' ')
+	print()
 	# Days matrix
 	for row in mmat:
 		for day in row:
 			if day == 0:
-				print spaces_per_cell * " ",
+				print(spaces_per_cell * " ", end=' ')
 			else:
-				print str(day).rjust(spaces_per_cell),
-		print
+				print(str(day).rjust(spaces_per_cell), end=' ')
+		print()
 
 
 ########################
@@ -218,8 +218,8 @@ def print_month(month, year):
 
 if __name__ == "__main__":
 	try:
-		month = long(sys.argv[1])
-		year = long(sys.argv[2])
+		month = int(sys.argv[1])
+		year = int(sys.argv[2])
 		if month < 1 or month > 12 or year < 1:
 			raise ValueError
 	except (ValueError, IndexError):
